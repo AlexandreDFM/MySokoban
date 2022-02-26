@@ -29,7 +29,14 @@ typedef struct sokoban {
 #ifndef SOKOBAN
     #define SOKOBAN
 
+int min_y(int y);
+int max_y(int y);
+int min_x(int x);
+int max_x(int x);
+char *del_player(char *map);
 char *open_file(char *mappath, int size_of_read);
+int check_actualize_map(sokoban_t *sokoban, int y, int x);
+int check_check_win(sokoban_t *sokoban, int y, int x, int *countero);
 int count_int_read(char *mappath);
 int get_rows(char *map);
 int get_cols(char *map);
@@ -39,8 +46,8 @@ int actualise_size(sokoban_t *sokoban);
 int actualize_map(sokoban_t *sokoban);
 int check_win(sokoban_t *sokoban);
 int check_lose(sokoban_t *sokoban);
-void display(sokoban_t *sokoban);
+int display(sokoban_t *sokoban);
 void player_movement_input(sokoban_t *sokoban, int input);
-char **my_str_to_word_array(char const *str);
+char **my_strtwa(char const *str, char *limit);
 
 #endif

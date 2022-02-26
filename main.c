@@ -24,7 +24,6 @@ int main(int argc, char **argv)
         return 0;
     }
     else if (argc == 2) {
-        if (init_game(argv[1]) == 84) return 84;
-        return 0;
+        return init_game(argv[1]);
     }
 }

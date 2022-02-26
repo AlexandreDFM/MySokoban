@@ -29,24 +29,34 @@ int check_map(char *map, sokoban_t *sokoban)
     return 0;
 }
 
-void print_win_lose(sokoban_t *sokoban, int *retry)
+int print_win_lose(sokoban_t *sokoban, int *retry)
 {
     if (check_win(sokoban) != 0) {
-        mvwprintw(stdscr, stdscr->_maxy / 2, stdscr->_maxx / 2,
-        "You win, Retry by pressing SPACE");
-        int input = wgetch(stdscr);
-        if (input == 32)
-            *retry = 1;
+        endwin();
+        return 0;
     } else {
-        mvwprintw(stdscr, stdscr->_maxy / 2, stdscr->_maxx / 2,
-        "You lose, Retry by pressing SPACE");
-        int input = wgetch(stdscr);
-        if (input == 32)
-            *retry = 1;
+        endwin();
+        return 1;
     }
 }
 
-void display(sokoban_t *sokoban)
+void game(sokoban_t *sokoban, int *retry)
+{
+    for (int i = 0; sokoban->map[i] != NULL; i++)
+        mvwprintw(stdscr,
+        stdscr->_maxy / 2 - (sokoban->nbrows / 2) + i,
+        stdscr->_maxx / 2 - (sokoban->nbcol / 2), sokoban->map[i]);
+    addch(' ');
+    move(sokoban->poscursey, sokoban->poscursex);
+    addch('P');
+    move(sokoban->poscursey, sokoban->poscursex);
+    int input = wgetch(stdscr);
+    if (input == 32)
+        *retry = 1;
+    player_movement_input(sokoban, input);
+}
+
+int display(sokoban_t *sokoban)
 {
     int retry = 0;
     while (retry == 0) {
@@ -54,41 +64,19 @@ void display(sokoban_t *sokoban)
         actualise_size(sokoban);
         actualize_map(sokoban);
         if (check_win(sokoban) != 0 || check_lose(sokoban) != 0) {
-            print_win_lose(sokoban, &retry);
+            return print_win_lose(sokoban, &retry);
         } else if (sokoban->sizewiny < sokoban->nbrows ||
         sokoban->sizewiny < sokoban->nbcol) {
             mvwprintw(stdscr, stdscr->_maxy / 2,
             stdscr->_maxx / 2, "Wrong terminal size");
         } else {
-            for (int i = 0; sokoban->map[i] != NULL; i++)
-                mvwprintw(stdscr,
-                stdscr->_maxy / 2 - (sokoban->nbrows / 2) + i,
-                stdscr->_maxx / 2 - (sokoban->nbcol / 2), sokoban->map[i]);
-            addch(' ');
-            move(sokoban->poscursey, sokoban->poscursex);
-            addch('P');
-            move(sokoban->poscursey, sokoban->poscursex);
-            int input = wgetch(stdscr);
-            if (input == 32)
-                retry = 1;
-            player_movement_input(sokoban, input);
+            game(sokoban, &retry);
         }
         refresh();
     }
     if (retry == 1) {
         init_game(sokoban->filepath);
     }
-}
-
-char *del_player(char *map)
-{
-    for (int i = 0; map[i] != '\0'; i++) {
-        if (map[i] == 'P') {
-            map[i] = ' ';
-            break;
-        }
-    }
-    return map;
 }
 
 int init_game(char *path)
@@ -102,8 +90,8 @@ int init_game(char *path)
     sokoban.nbrows = get_rows(arraymap);
     sokoban.nbcol = get_cols(arraymap);
     arraymap = del_player(arraymap);
-    sokoban.map = my_str_to_word_array(arraymap);
-    sokoban.mapcpy = my_str_to_word_array(arraymap);
+    sokoban.map = my_strtwa(arraymap, "\n");
+    sokoban.mapcpy = my_strtwa(arraymap, "\n");
     initscr();
     keypad(stdscr, TRUE);
     sokoban.sizewinx = stdscr->_maxx;
@@ -111,7 +99,5 @@ int init_game(char *path)
     sokoban.poscursex = sokoban.posx + stdscr->_maxx / 2 - (sokoban.nbcol / 2);
     sokoban.poscursey = sokoban.posy +
     stdscr->_maxy / 2 - (sokoban.nbrows / 2);
-    display(&sokoban);
-    my_printf("X : %d ; Y : %d", sokoban.posx, sokoban.posy);
-    endwin();
+    return display(&sokoban);
 }

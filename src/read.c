@@ -55,3 +55,14 @@ int get_cols(char *map)
     for (; map[nb_cols] != '\n' && map[nb_cols] != '\0'; nb_cols++);
     return nb_cols;
 }
+
+char *del_player(char *map)
+{
+    for (int i = 0; map[i] != '\0'; i++) {
+        if (map[i] == 'P') {
+            map[i] = ' ';
+            break;
+        }
+    }
+    return map;
+}

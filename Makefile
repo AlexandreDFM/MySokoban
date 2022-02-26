@@ -13,8 +13,10 @@ RM    = rm -f
 
 SRC    = main.c								\
 		 ./src/actualise.c					\
+		 ./src/check_actualise.c			\
+		 ./src/check_max_mov.c				\
 		 ./src/movement.c					\
-		 ./src/my_str_to_word_array.c		\
+		 ./src/my_strtwa.c					\
 		 ./src/read.c						\
 		 ./src/sokoban.c					\
 

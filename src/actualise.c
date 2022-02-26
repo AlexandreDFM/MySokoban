@@ -25,23 +25,20 @@ int actualize_map(sokoban_t *sokoban)
 {
     for (int x = 0; sokoban->mapcpy[x] != NULL; x++) {
         for (int y = 0; sokoban->mapcpy[x][y] != '\0'; y++) {
-            if (sokoban->mapcpy[x][y] == 'O' && sokoban->map[x][y] == ' ')
-                sokoban->map[x][y] = 'O';
+            check_actualize_map(sokoban, y, x);
         }
     }
 }
 
 int check_win(sokoban_t *sokoban)
 {
-    int counterO = 0;
+    int countero = 0;
     for (int y = 0; sokoban->map[y] != NULL; y++) {
         for (int x = 0; sokoban->map[y][x] != '\0'; x++) {
-            if (sokoban->map[y][x] == 'O') {
-                counterO += 1;
-            }
+            check_check_win(sokoban, y, x, &countero);
         }
     }
-    if (counterO == 0) {
+    if (countero == 0) {
         return 1;
     }
     return 0;

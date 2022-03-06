@@ -9,13 +9,12 @@
 
 int check_map(char *map, sokoban_t *sokoban)
 {
-    int line = 0;
-    int size_one_line = 0;
+    int line = 0, size_one_line = 0, counterx = 0, countero = 0;
     for (int i = 0; map[i] != '\0'; i++) {
-        if (map[i] == '\n' && size_one_line == 0)
-            size_one_line = i - 1;
-        if (map[i] == '\n')
-            line += 1;
+        if (map[i] == '\n' && size_one_line == 0) size_one_line = i - 1;
+        if (map[i] == '\n') line += 1;
+        if (map[i] == 'X') counterx += 1;
+        if (map[i] == 'O') countero += 1;
         if (map[i] == 'P') {
             sokoban->posx = i - size_one_line * line - line * 2;
             sokoban->posy = line;
@@ -26,6 +25,7 @@ int check_map(char *map, sokoban_t *sokoban)
             return 1;
         }
     }
+    if (countero != counterx) return 1;
     return 0;
 }
 
@@ -42,10 +42,11 @@ int print_win_lose(sokoban_t *sokoban, int *retry)
 
 void game(sokoban_t *sokoban, int *retry)
 {
-    for (int i = 0; sokoban->map[i] != NULL; i++)
+    for (int i = 0; sokoban->map[i] != NULL; i++) {
         mvwprintw(stdscr,
         stdscr->_maxy / 2 - (sokoban->nbrows / 2) + i,
         stdscr->_maxx / 2 - (sokoban->nbcol / 2), sokoban->map[i]);
+    }
     addch(' ');
     move(sokoban->poscursey, sokoban->poscursex);
     addch('P');
@@ -81,17 +82,17 @@ int display(sokoban_t *sokoban)
 
 int init_game(char *path)
 {
-    char *arraymap = open_file(path, count_int_read(path));
+    char *strmap = open_file(path, count_int_read(path));
     sokoban_t sokoban;
     sokoban.filepath = path;
     sokoban.posx = 0;
     sokoban.posy = 0;
-    if (check_map(arraymap, &sokoban)) return 84;
-    sokoban.nbrows = get_rows(arraymap);
-    sokoban.nbcol = get_cols(arraymap);
-    arraymap = del_player(arraymap);
-    sokoban.map = my_strtwa(arraymap, "\n");
-    sokoban.mapcpy = my_strtwa(arraymap, "\n");
+    if (check_map(strmap, &sokoban)) return 84;
+    sokoban.nbrows = get_rows(strmap);
+    sokoban.nbcol = get_cols(strmap);
+    strmap = del_player(strmap);
+    sokoban.map = my_strtwa(strmap, "\n");
+    sokoban.mapcpy = my_strtwa(strmap, "\n");
     initscr();
     keypad(stdscr, TRUE);
     sokoban.sizewinx = stdscr->_maxx;

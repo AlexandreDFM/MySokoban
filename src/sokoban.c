@@ -32,15 +32,19 @@ int check_map(char *map, sokoban_t *sokoban)
 int print_win_lose(sokoban_t *sokoban, int *retry)
 {
     if (check_win(sokoban) != 0) {
-        mvwprintw(stdscr,
-        stdscr->_maxy / 2 - (sokoban->nbrows / 2) + i,
-        stdscr->_maxx / 2 - (sokoban->nbcol / 2), sokoban->map[i]);
+        for (int i = 0; sokoban->map[i] != NULL; i++) {
+            mvwprintw(stdscr,
+            stdscr->_maxy / 2 - (sokoban->nbrows / 2) + i,
+            stdscr->_maxx / 2 - (sokoban->nbcol / 2), sokoban->map[i]);
+        }
         endwin();
         return 0;
     } else {
-        mvwprintw(stdscr,
-        stdscr->_maxy / 2 - (sokoban->nbrows / 2) + i,
-        stdscr->_maxx / 2 - (sokoban->nbcol / 2), sokoban->map[i]);
+        for (int i = 0; sokoban->map[i] != NULL; i++) {
+            mvwprintw(stdscr,
+            stdscr->_maxy / 2 - (sokoban->nbrows / 2) + i,
+            stdscr->_maxx / 2 - (sokoban->nbcol / 2), sokoban->map[i]);
+        }
         endwin();
         return 1;
     }

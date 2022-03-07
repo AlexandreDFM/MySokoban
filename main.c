@@ -17,6 +17,14 @@ void my_manual(void)
     "     'P' for the player, 'X' for boxes and 'O' for storage locations.\n");
 }
 
+int check_is_file(char *filepath)
+{
+    struct stat bytes;
+    if (stat(filepath, &bytes) < 0) return 84;
+    if (bytes.st_size <= 0) return 84;
+    return init_game(filepath);
+}
+
 int main(int argc, char **argv)
 {
     if (argc == 2 && my_strcmp(argv[1], "-h") == 0) {
@@ -24,6 +32,7 @@ int main(int argc, char **argv)
         return 0;
     }
     else if (argc == 2) {
-        return init_game(argv[1]);
+        return check_is_file(argv[1]);
     }
+    return 84;
 }

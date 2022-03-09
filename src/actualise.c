@@ -44,18 +44,19 @@ int check_win(sokoban_t *sokoban)
     return 0;
 }
 
-int check_lose2(sokoban_t *sokoban, int x, int y, int *counter)
+int check_lose2(sokoban_t *sokoban, int x, int y, int *counterx)
 {
+    int counter = 0;
     if (sokoban->map[y][x] == 'X') {
+        *counterx += 1;
         if (sokoban->map[y + 1][x] == '#' && sokoban->map[y][x + 1] == '#')
-            *counter += 1;
+            return 1;
         if (sokoban->map[y + 1][x] == '#' && sokoban->map[y][x - 1] == '#')
-            *counter += 1;
+            return 1;
         if (sokoban->map[y - 1][x] == '#' && sokoban->map[y][x + 1] == '#')
-            *counter += 1;
+            return 1;
         if (sokoban->map[y - 1][x] == '#' && sokoban->map[y][x - 1] == '#')
-            *counter += 1;
-        return 1;
+            return 1;
     }
     return 0;
 }
@@ -66,7 +67,7 @@ int check_lose(sokoban_t *sokoban)
     int counterx = 0;
     for (int y = 0; sokoban->map[y] != NULL; y++) {
         for (int x = 0; sokoban->map[y][x]; x++) {
-            counterx += check_lose2(sokoban, x, y, &counter);
+            counter += check_lose2(sokoban, x, y, &counterx);
         }
     }
     if (counter >= counterx)

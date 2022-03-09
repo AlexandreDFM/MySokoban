@@ -9,8 +9,11 @@
 
 int check_map(char *map, sokoban_t *sokoban)
 {
-    int counterx = 0, countero = 0;
+    int counterx = 0, countero = 0, counterp = 0;
     for (int i = 0; map[i] != '\0'; i++) {
+        if (map[i] == 'X') counterx += 1;
+        if (map[i] == 'O') countero += 1;
+        if (map[i] == 'P') counterp += 1;
         if (map[i] == ' ' || map[i] == '\n' || map[i] == '#'
         || map[i] == 'X' || map[i] == 'O' || map[i] == 'P' || map[i] == '\0') {
             continue;
@@ -18,6 +21,8 @@ int check_map(char *map, sokoban_t *sokoban)
             return 1;
         }
     }
+    if (counterp != 1) return 1;
+    if (countero == 0 || counterx == 0) return 1;
     if (countero != counterx) return 1;
     return 0;
 }

@@ -20,6 +20,7 @@ SRC    = main.c								\
 		 ./src/read.c						\
 		 ./src/sokoban.c					\
 		 ./src/player.c						\
+		 ./src/win_lose.c					\
 
 OBJ    = $(SRC:.c=.o)
 

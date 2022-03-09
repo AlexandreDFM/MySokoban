@@ -42,6 +42,7 @@ int get_rows(char *map);
 int get_cols(char *map);
 int init_game(char *path);
 void check_player(sokoban_t *sokoban);
+int print_win_lose(sokoban_t *sokoban, int *retry);
 char **del_player(char **map);
 void player_pos(sokoban_t *sokoban, char **map);
 int check_map(char *map, sokoban_t *sokoban);

@@ -47,12 +47,15 @@ char **my_strtwa(char const *str, char *limit)
     int nbmax = (nb_not_valid(str, limit) + 1), nby = 0, nbx = 0;
     char **dest = malloc(sizeof(char*) * (nbmax + 1));
     dest[nbmax] = NULL;
-    my_alloc_array(str, limit, dest);
+    dest = my_alloc_array(str, limit, dest);
     for (int nbc = 0; nby < nbmax - 1; nbc++, nbx++) {
         if (test_lim(str[nbc], limit)) {
             dest[nby][nbx] = '\0';
             nbx = 0, nby += 1, nbc++;
         }
+        if (nbc >= 2 && test_lim(str[nbc - 2], limit)
+        && test_lim(str[nbc - 1], limit))
+            nbx = 0, nby += 1;
         dest[nby][nbx] = str[nbc];
     }
     dest[nby][nbx] = '\0';

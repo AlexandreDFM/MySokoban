@@ -19,6 +19,7 @@ SRC    = main.c								\
 		 ./src/my_strtwa.c					\
 		 ./src/read.c						\
 		 ./src/sokoban.c					\
+		 ./src/player.c						\
 
 OBJ    = $(SRC:.c=.o)
 

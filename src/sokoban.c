@@ -9,16 +9,9 @@
 
 int check_map(char *map, sokoban_t *sokoban)
 {
-    int line = 0, size_one_line = 0, counterx = 0, countero = 0;
+    int counterx = 0, countero = 0;
     for (int i = 0; map[i] != '\0'; i++) {
-        if (map[i] == '\n' && size_one_line == 0) size_one_line = i - 1;
-        if (map[i] == '\n') line += 1;
-        if (map[i] == 'X') counterx += 1;
-        if (map[i] == 'O') countero += 1;
-        if (map[i] == 'P') {
-            sokoban->posx = i - size_one_line * line - line * 2;
-            sokoban->posy = line;
-        } else if (map[i] == ' ' || map[i] == '\n' || map[i] == '#'
+        if (map[i] == ' ' || map[i] == '\n' || map[i] == '#'
         || map[i] == 'X' || map[i] == 'O' || map[i] == 'P' || map[i] == '\0') {
             continue;
         } else {
@@ -100,9 +93,9 @@ int init_game(char *path)
     if (check_map(strmap, &sokoban)) return 84;
     sokoban.nbrows = get_rows(strmap);
     sokoban.nbcol = get_cols(strmap);
-    strmap = del_player(strmap);
     sokoban.map = my_strtwa(strmap, "\n");
     sokoban.mapcpy = my_strtwa(strmap, "\n");
+    check_player(&sokoban);
     initscr();
     keypad(stdscr, TRUE);
     sokoban.sizewinx = stdscr->_maxx;

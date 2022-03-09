@@ -35,6 +35,10 @@ int print_win_lose(sokoban_t *sokoban, int *retry)
             stdscr->_maxy / 2 - (sokoban->nbrows / 2) + i,
             stdscr->_maxx / 2 - (sokoban->nbcol / 2), sokoban->map[i]);
         }
+        addch(' ');
+        move(sokoban->poscursey, sokoban->poscursex);
+        addch('P');
+        move(sokoban->poscursey, sokoban->poscursex);
         endwin();
         return 0;
     } else {
@@ -43,6 +47,10 @@ int print_win_lose(sokoban_t *sokoban, int *retry)
             stdscr->_maxy / 2 - (sokoban->nbrows / 2) + i,
             stdscr->_maxx / 2 - (sokoban->nbcol / 2), sokoban->map[i]);
         }
+        addch(' ');
+        move(sokoban->poscursey, sokoban->poscursex);
+        addch('P');
+        move(sokoban->poscursey, sokoban->poscursex);
         endwin();
         return 1;
     }

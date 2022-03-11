@@ -30,8 +30,7 @@ int main(int argc, char **argv)
     if (argc == 2 && my_strcmp(argv[1], "-h") == 0) {
         my_manual();
         return 0;
-    }
-    else if (argc == 2) {
+    } else if (argc == 2) {
         return check_is_file(argv[1]);
     }
     return 84;

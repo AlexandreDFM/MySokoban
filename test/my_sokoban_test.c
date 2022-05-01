@@ -8,8 +8,7 @@
 #include <criterion/criterion.h>
 #include "sokoban.h"
 
-Test(sokoban, check_player_position)
-{
+Test(sokoban, check_player_position) {
     struct sokoban_map *map;
     struct position *pos;
     map = make_map_from_string("##########\n"
